@@ -1,5 +1,5 @@
 {
-  "name": "serverless_twitter_backend",
+  "name": "serverless-twitter-backend",
   "version": "1.0.0",
   "description": "Serverless application - Twitter Clone",
   "main": "handler.js",

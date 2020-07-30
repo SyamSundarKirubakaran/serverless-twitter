@@ -1,5 +1,5 @@
 service:
-  name: serverless_twitter_backend
+  name: serverless-twitter-backend
 
 custom:
   webpack:
@@ -19,7 +19,7 @@ provider:
 
 functions:
   hello:
-    handler: handler.hello
+    handler: src/handler.hello
     events:
       - http:
           method: get

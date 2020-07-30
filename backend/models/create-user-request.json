@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "create-user",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "isVerified": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "imageUrl",
+    "isVerified"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "create-tweet",
+  "type": "object",
+  "properties": {
+    "followingCount": {
+      "type": "integer"
+    },
+    "followingList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/LightWeightUser"
+      }
+    },
+    "targetUserId": {
+      "type": "string"
+    },
+    "followerCount": {
+      "type": "integer"
+    },
+    "followerList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/LightWeightUser"
+      }
+    }
+  },
+  "required": [
+    "followingCount",
+    "followingList",
+    "targetUserId",
+    "followerCount",
+    "followerList"
+  ],
+  "definitions": {
+    "LightWeightUser": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "isVerified": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "userId",
+        "name",
+        "email",
+        "imageUrl",
+        "isVerified"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

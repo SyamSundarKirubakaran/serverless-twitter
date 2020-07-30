@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "create-tweet",
+  "type": "object",
+  "properties": {
+    "tweet": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tweet"
+  ],
+  "additionalProperties": false
+}
