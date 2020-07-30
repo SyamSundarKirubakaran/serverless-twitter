@@ -13,9 +13,7 @@ import {LightWeightUser} from "../models/LightWeightUser";
 
 export interface FollowUserRequest {
     // user_id -> from bearer token -> following
-    followingCount: number,
     followingList: Array<LightWeightUser>
     targetUserId: string, // followers
-    followerCount: number,
     followerList: Array<LightWeightUser>
 }

@@ -5,8 +5,7 @@ export interface Tweet {
     id: string,
     userId: string,
     tweet: string,
-    date: string,
-    likesCount: number,
+    createdAt: string,
     likeList: Array<LightWeightUser>,
     imageUrl?: string
 }

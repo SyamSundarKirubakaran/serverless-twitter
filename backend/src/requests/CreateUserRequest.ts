@@ -4,5 +4,5 @@ export interface CreateUserRequest {
     name: string,
     email: string,
     imageUrl: string
-    isVerified: boolean,
+    isVerified: boolean
 }

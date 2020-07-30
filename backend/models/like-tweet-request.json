@@ -3,9 +3,6 @@
   "title": "create-tweet",
   "type": "object",
   "properties": {
-    "likesCount": {
-      "type": "number"
-    },
     "likeList": {
       "type": "array",
       "items": {
@@ -14,7 +11,6 @@
     }
   },
   "required": [
-    "likesCount",
     "likeList"
   ],
   "definitions": {

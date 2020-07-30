@@ -1,13 +1,39 @@
 service:
   name: serverless-twitter-backend
 
+plugins:
+  - serverless-webpack
+  - serverless-aws-documentation
+  - serverless-reqvalidator-plugin
+  - serverless-iam-roles-per-function
+
+package:
+  individually: true
+
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
 
-plugins:
-  - serverless-webpack
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Serverless Twitter API
+        description: Backend for Twitter Clone
+    models:
+      - name: CreateTweet
+        contentType: application/json
+        schema: ${file(models/create-tweet-request.json)}
+      - name: CreateUser
+        contentType: application/json
+        schema: ${file(models/create-user-request.json)}
+      - name: FollowUser
+        contentType: application/json
+        schema: ${file(models/follow-user-request.json)}
+      - name: LikeTweet
+        contentType: application/json
+        schema: ${file(models/like-tweet-request.json)}
 
 provider:
   name: aws
@@ -16,11 +42,146 @@ provider:
     minimumCompressionSize: 1024
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    TWEET_TABLE: Tweet-${self:provider.stage}
+    USER_TABLE: Twitter-User-${self:provider.stage}
+    USER_ID_INDEX: UserIdIndex
 
 functions:
-  hello:
-    handler: src/handler.hello
+  Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
+
+  CreateUser:
+    handler: src/lambda/http/createUser.handler
+    events:
+      - http:
+          method: post
+          path: user
+          authorizer: Auth
+          cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create User
+            description: Create User
+            requestModels:
+              'application/json': CreateUser
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+
+  CreateTweet:
+    handler: src/lambda/http/createTweet.handler
+    events:
+      - http:
+          method: post
+          path: tweet
+          authorizer: Auth
+          cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create Tweet
+            description: Create Tweet
+            requestModels:
+              'application/json': CreateTweet
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
+
+  GetTweets:
+    handler: src/lambda/http/getTweets.handler
     events:
       - http:
           method: get
-          path: hello
+          path: tweet
+          authorizer: Auth
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
+
+  MyTweets:
+    handler: src/lambda/http/getTweets.handler
+    events:
+      - http:
+          method: get
+          path: tweet/mine
+          authorizer: Auth
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}/index/${self:provider.environment.USER_ID_INDEX}
+
+
+resources:
+  Resources:
+
+    TweetDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: createdAt
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.USER_ID_INDEX}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.TWEET_TABLE}
+
+    UserDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.USER_TABLE}
+
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
+
+    GatewayResponseDefault4XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*''"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: ApiGatewayRestApi

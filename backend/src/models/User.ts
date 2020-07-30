@@ -6,8 +6,6 @@ export interface User {
     email: string,
     imageUrl: string,
     isVerified: boolean,
-    followerCount: number,
     followerList: Array<LightWeightUser>,
-    followingCount: number,
     followingList: Array<LightWeightUser>
 }

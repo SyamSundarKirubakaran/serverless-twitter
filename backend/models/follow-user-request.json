@@ -3,9 +3,6 @@
   "title": "create-tweet",
   "type": "object",
   "properties": {
-    "followingCount": {
-      "type": "integer"
-    },
     "followingList": {
       "type": "array",
       "items": {
@@ -15,9 +12,6 @@
     "targetUserId": {
       "type": "string"
     },
-    "followerCount": {
-      "type": "integer"
-    },
     "followerList": {
       "type": "array",
       "items": {
@@ -26,10 +20,8 @@
     }
   },
   "required": [
-    "followingCount",
     "followingList",
     "targetUserId",
-    "followerCount",
     "followerList"
   ],
   "definitions": {

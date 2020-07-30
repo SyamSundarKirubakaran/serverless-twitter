@@ -13,7 +13,7 @@
       "type": "string"
     },
     "isVerified": {
-      "type": "string"
+      "type": "boolean"
     }
   },
   "required": [
