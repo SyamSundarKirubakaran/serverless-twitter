@@ -189,6 +189,21 @@ functions:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
 
+  DeleteTweet:
+    handler: src/lambda/http/deleteTweet.handler
+    events:
+      - http:
+          method: delete
+          path: tweet/{tweetId}
+          authorizer: Auth
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
+
 resources:
   Resources:
 

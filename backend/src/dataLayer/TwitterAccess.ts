@@ -92,6 +92,16 @@ export class TwitterAccess {
         }).promise()
     }
 
+    async deleteTweet(id: string, createdAt: string) {
+        await this.docClient.delete({
+            TableName: this.tweetTable,
+            Key: {
+                'id': id,
+                'createdAt': createdAt,
+            }
+        }).promise()
+    }
+
     async updateUser(id: string, updateRequest: FollowUserRequest) {
         await this.docClient.update({
             TableName: this.userTable,

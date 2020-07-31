@@ -54,8 +54,12 @@ export async function getTweetById(id: string): Promise<AWS.DynamoDB.QueryOutput
     return twitterAccess.getTweetById(id)
 }
 
-export async function updateTweet(id: string, createdAt: string,updateRequest: LikeTweetRequest) {
+export async function updateTweet(id: string, createdAt: string, updateRequest: LikeTweetRequest) {
     await twitterAccess.updateTweet(id, createdAt, updateRequest)
+}
+
+export async function deleteTweet(id: string, createdAt: string) {
+    await twitterAccess.deleteTweet(id, createdAt)
 }
 
 export async function updateUser(id: string, updateRequest: FollowUserRequest) {
