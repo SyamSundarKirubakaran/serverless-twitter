@@ -44,6 +44,7 @@ provider:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     TWEET_TABLE: Tweet-${self:provider.stage}
     USER_TABLE: Twitter-User-${self:provider.stage}
+    IMAGES_BUCKET: twitter-images-${self:provider.stage}
     USER_ID_INDEX: UserIdIndex
 
 functions:
@@ -104,6 +105,10 @@ functions:
         Action:
           - dynamodb:Scan
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
+      - Effect: Allow
+        Action:
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.IMAGES_BUCKET}/*
 
   UserTweets:
     handler: src/lambda/http/getUserTweets.handler
@@ -118,6 +123,10 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}/index/${self:provider.environment.USER_ID_INDEX}
+      - Effect: Allow
+        Action:
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.IMAGES_BUCKET}/*
 
   UpdateTweet:
     handler: src/lambda/http/updateTweet.handler
@@ -204,6 +213,24 @@ functions:
           - dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
 
+  SignedUrl:
+    handler: src/lambda/http/signedUrl.handler
+    events:
+      - http:
+          method: get
+          path: tweet/signedUrl/{tweetId}
+          authorizer: Auth
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+        Resource: arn:aws:s3:::${self:provider.environment.IMAGES_BUCKET}/*
+
 resources:
   Resources:
 
@@ -245,6 +272,25 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.USER_TABLE}
+
+    TwitterBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.IMAGES_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              AllowedOrigins:
+                - "*"
+              MaxAge: 3000
 
     RequestBodyValidator:
       Type: AWS::ApiGateway::RequestValidator
