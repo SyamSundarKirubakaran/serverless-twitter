@@ -4,6 +4,7 @@ import {LightWeightUser} from "./LightWeightUser";
 export interface Tweet {
     id: string,
     userId: string,
+    user: LightWeightUser
     tweet: string,
     createdAt: string,
     likeList: Array<LightWeightUser>,

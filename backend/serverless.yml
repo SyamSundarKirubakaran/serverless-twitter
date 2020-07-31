@@ -105,24 +105,89 @@ functions:
           - dynamodb:Scan
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
 
-  MyTweets:
-    handler: src/lambda/http/getTweets.handler
+  UserTweets:
+    handler: src/lambda/http/getUserTweets.handler
     events:
       - http:
           method: get
-          path: tweet/mine
+          path: tweet/specific/{authType}/{userId}
+          authorizer: Auth
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}/index/${self:provider.environment.USER_ID_INDEX}
+
+  UpdateTweet:
+    handler: src/lambda/http/updateTweet.handler
+    events:
+      - http:
+          method: patch
+          path: tweet/{tweetId}
+          authorizer: Auth
+          cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Update Tweet
+            description: Update Tweet
+            requestModels:
+              'application/json': LikeTweet
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
+
+  UpdateUser:
+    handler: src/lambda/http/updateUser.handler
+    events:
+      - http:
+          method: patch
+          path: user
+          authorizer: Auth
+          cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Update User
+            description: Update User
+            requestModels:
+              'application/json': FollowUser
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+
+  GetUsers:
+    handler: src/lambda/http/getUsers.handler
+    events:
+      - http:
+          method: get
+          path: user
           authorizer: Auth
           cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Scan
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+
+  GetUserById:
+    handler: src/lambda/http/getUserById.handler
+    events:
+      - http:
+          method: get
+          path: user/specific/{authType}/{userId}
+          authorizer: Auth
+          cors: true
+    iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWEET_TABLE}/index/${self:provider.environment.USER_ID_INDEX}
-
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
 
 resources:
   Resources:

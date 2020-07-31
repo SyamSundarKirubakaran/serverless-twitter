@@ -4,7 +4,7 @@ import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} fro
 import {createLogger} from "../../utils/logger";
 import {GeneralUtil} from "../../utils/general";
 import {getUserId} from "../utils";
-import {createUser, getUserCountById} from "../../businessLogic/Twitter";
+import {createUser, getUserById} from "../../businessLogic/Twitter";
 import {CreateUserRequest} from "../../requests/CreateUserRequest";
 
 const generalUtil = new GeneralUtil()
@@ -16,7 +16,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     const userId = getUserId(event)
 
     // before creating, check if the user already exists
-    const existingUser = await getUserCountById(userId)
+    const existingUser = await getUserById(userId)
 
     if (existingUser.Count == 0) {
         const item = await createUser(userId, newUser)

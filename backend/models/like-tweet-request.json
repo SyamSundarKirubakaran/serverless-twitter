@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "create-tweet",
+  "title": "like-tweet",
   "type": "object",
   "properties": {
     "likeList": {
@@ -30,7 +30,7 @@
           "type": "string"
         },
         "isVerified": {
-          "type": "string"
+          "type": "boolean"
         }
       },
       "required": [

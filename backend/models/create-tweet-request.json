@@ -3,12 +3,48 @@
   "title": "create-tweet",
   "type": "object",
   "properties": {
+    "user": {
+      "type": "object",
+      "items": {
+        "$ref": "#/definitions/LightWeightUser"
+      }
+    },
     "tweet": {
       "type": "string"
     }
   },
   "required": [
+    "user",
     "tweet"
   ],
+  "definitions": {
+    "LightWeightUser": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "isVerified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "userId",
+        "name",
+        "email",
+        "imageUrl",
+        "isVerified"
+      ]
+    }
+  },
   "additionalProperties": false
 }
