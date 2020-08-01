@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Serverless Twitter</string>
+    <string name="login">Log in</string>
+    <string name="com_auth0_client_id">ryo569Uzwpl8TBtDHt2ASsVdlKCbv5o0</string>
+    <string name="com_auth0_domain">dev-zi9x0fld.us.auth0.com</string>
 </resources>
