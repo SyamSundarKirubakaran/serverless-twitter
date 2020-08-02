@@ -8,6 +8,9 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import app.syam.twitter.HomeActivity
 import app.syam.twitter.R
+import app.syam.twitter.common.model.User
+import app.syam.twitter.common.storage.SharedPreferenceManager
+import app.syam.twitter.common.storage.SharedPreferenceManager.getLoggedInUser
 import app.syam.twitter.util.EXTRA_ACCESS_TOKEN
 import app.syam.twitter.util.EXTRA_CLEAR_CREDENTIALS
 import app.syam.twitter.util.EXTRA_ID_TOKEN
@@ -26,6 +29,8 @@ import com.auth0.android.provider.VoidCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -79,8 +84,8 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun getProfile(credentials: Credentials) {
-        val accessToken = credentials.accessToken.orEmpty()
+    private fun getProfile(credentials: Credentials?) {
+        val accessToken = credentials?.accessToken.orEmpty()
         val usersClient = UsersAPIClient(auth0, accessToken)
         authenticationAPIClient.userInfo(accessToken)
             .start(object : BaseCallback<UserProfile, AuthenticationException?> {
@@ -90,8 +95,39 @@ class LoginActivity : AppCompatActivity() {
                             override fun onSuccess(profile: UserProfile) {
                                 // TODO: Here we have both `profile` and `credentials` -> write it to shared preference
 
-                                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-                                finish()
+                                runOnUiThread {
+                                    if (credentials == null) {
+
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "Please login with your gmail account",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+
+                                    } else {
+
+                                        val user = User(
+                                            userId = profile.id,
+                                            name = profile.nickname,
+                                            email = profile.email,
+                                            imageUrl = profile.pictureURL,
+                                            isVerified = profile.isEmailVerified,
+                                            token = credentials.accessToken.orEmpty()
+                                        )
+
+                                        SharedPreferenceManager.setUser(this@LoginActivity, user)
+                                            .subscribeOn(Schedulers.io())
+                                            .subscribe({
+                                                startActivity(
+                                                    Intent(
+                                                        this@LoginActivity,
+                                                        HomeActivity::class.java
+                                                    )
+                                                )
+                                                finish()
+                                            }, {})
+                                    }
+                                }
 
                             }
 
