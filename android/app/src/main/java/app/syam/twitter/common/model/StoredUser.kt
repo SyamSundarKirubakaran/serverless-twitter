@@ -1,6 +1,6 @@
 package app.syam.twitter.common.model
 
-data class User(
+data class StoredUser(
     val userId: String,
     val token: String,
     val name: String,

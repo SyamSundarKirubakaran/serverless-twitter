@@ -6,6 +6,10 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    androidExtensions {
+        experimental = true
+    }
+
     defaultConfig {
         applicationId "app.syam.twitter"
         minSdkVersion 21
@@ -39,6 +43,9 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "com.xwray:groupie:2.2.0"
+    implementation "com.xwray:groupie-kotlin-android-extensions:2.2.0"
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

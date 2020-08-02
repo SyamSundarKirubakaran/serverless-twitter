@@ -6,14 +6,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
-import app.syam.twitter.HomeActivity
+import app.syam.twitter.home.HomeActivity
 import app.syam.twitter.R
-import app.syam.twitter.common.model.User
+import app.syam.twitter.common.model.StoredUser
 import app.syam.twitter.common.storage.SharedPreferenceManager
-import app.syam.twitter.common.storage.SharedPreferenceManager.getLoggedInUser
-import app.syam.twitter.util.EXTRA_ACCESS_TOKEN
 import app.syam.twitter.util.EXTRA_CLEAR_CREDENTIALS
-import app.syam.twitter.util.EXTRA_ID_TOKEN
 import com.auth0.android.Auth0
 import com.auth0.android.Auth0Exception
 import com.auth0.android.authentication.AuthenticationAPIClient
@@ -29,7 +26,6 @@ import com.auth0.android.provider.VoidCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -106,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
 
                                     } else {
 
-                                        val user = User(
+                                        val user = StoredUser(
                                             userId = profile.id,
                                             name = profile.nickname,
                                             email = profile.email,

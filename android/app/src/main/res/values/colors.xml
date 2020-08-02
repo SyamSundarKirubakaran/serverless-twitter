@@ -4,5 +4,8 @@
     <color name="colorPrimaryDark">#292f33</color>
     <color name="colorAccent">#55acee</color>
     <color name="white">#ffffff</color>
+    <color name="sub_text">#787878</color>
+    <color name="sub_text_light">#BCBCBC</color>
     <color name="blue_text">#171F4B</color>
+    <color name="divider_gray">#454444</color>
 </resources>
