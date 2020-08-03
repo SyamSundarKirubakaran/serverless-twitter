@@ -7,7 +7,6 @@ import app.syam.twitter.auth.model.AuthBody
 import app.syam.twitter.auth.network.AuthService
 import app.syam.twitter.common.model.StoredUser
 import app.syam.twitter.common.storage.SharedPreferenceManager
-import app.syam.twitter.home.state.LikeCallState
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

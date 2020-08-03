@@ -1,5 +1,6 @@
 package app.syam.twitter.tweet.network
 
+import app.syam.twitter.home.model.CreateTweet
 import app.syam.twitter.home.model.TweetResult
 import app.syam.twitter.tweet.model.UpdateTweet
 import app.syam.twitter.util.NetworkUtil
@@ -24,6 +25,13 @@ interface TweetService {
         @Header("Authorization") token: String,
         @Path("tweetId") tweetId: String,
         @Body body: UpdateTweet
+    ): Observable<Void>
+
+    @Headers("Accept: application/json", "content-type: application/json")
+    @POST("tweet")
+    fun createTweet(
+        @Header("Authorization") token: String,
+        @Body body: CreateTweet
     ): Observable<Void>
 
     object Creator{

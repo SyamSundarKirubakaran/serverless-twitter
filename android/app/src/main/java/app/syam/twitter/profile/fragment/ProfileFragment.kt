@@ -14,6 +14,7 @@ import app.syam.twitter.common.storage.SharedPreferenceManager
 import app.syam.twitter.listing.ListingActivity
 import app.syam.twitter.profile.ProfileActivity
 import app.syam.twitter.profile.item.ProfileHeader
+import app.syam.twitter.profile.model.UpdateUser
 import app.syam.twitter.profile.viewmodel.ProfileViewModel
 import app.syam.twitter.tweet.fragment.*
 import app.syam.twitter.tweet.item.TweetBodyImage
@@ -66,6 +67,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val storedUser = SharedPreferenceManager.getLoggedInUser(context)
+
         profileRecycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = profileAdapter
@@ -88,6 +91,10 @@ class ProfileFragment : Fragment() {
             add(
                 ProfileHeader(
                     user = receivedUser,
+                    following = receivedUser?.userId == storedUser?.userId ||
+                            (receivedUser?.followerList?.map { it.userId } ?: listOf()).contains(
+                                user?.userId
+                            ),
                     followersClicked = {
                         startActivity(
                             Intent(
@@ -121,6 +128,34 @@ class ProfileFragment : Fragment() {
                                 "following"
                             )
                         )
+                    },
+                    followClicked = {
+                        val mutableFollowerList =
+                            receivedUser?.followerList as MutableList<LightWeightUser>
+                        mutableFollowerList.add(
+                            LightWeightUser(
+                                userId = storedUser?.userId,
+                                name = storedUser?.name,
+                                email = storedUser?.email,
+                                imageUrl = storedUser?.imageUrl,
+                                isVerified = storedUser?.isVerified
+                            )
+                        )
+                        viewModel.updateUser(
+                            userId = storedUser?.userId.orEmpty(),
+                            updateUser = UpdateUser(
+                                targetUserId = receivedUser?.userId,
+                                followerList = mutableFollowerList,
+                                followingList = mutableListOf()
+                            ),
+                            lightWeightUser = LightWeightUser(
+                                userId = receivedUser?.userId,
+                                name = receivedUser?.name,
+                                email = receivedUser?.email,
+                                imageUrl = receivedUser?.imageUrl,
+                                isVerified = receivedUser?.isVerified
+                            )
+                        )
                     }
                 )
             )
@@ -131,10 +166,13 @@ class ProfileFragment : Fragment() {
             profileAdapter.apply {
                 add(TweetHeader(
                     user = it.user,
-                    optionsVisibility = View.GONE,
+                    uploadVisibility = if (receivedUser?.userId == storedUser?.userId && it.imageUrl == null) View.VISIBLE else View.GONE,
                     profileClicked = {},
                     createdAt = it.createdAt ?: "Sometime in the past",
-                    optionsClicked = {}
+                    uploadClicked = {
+                        // TODO: Write Image Upload logic here
+                        viewModel.getUploadImageUrl(it.id.orEmpty())
+                    }
                 ))
                 add(
                     TweetBodyText(
@@ -149,7 +187,8 @@ class ProfileFragment : Fragment() {
                     )
                 }
                 add(TweetFooter(
-                    isLiked = (it.likeList?.map { it.userId } ?: listOf<String>()).contains(user?.userId),
+                    isLiked = (it.likeList?.map { it.userId }
+                        ?: listOf<String>()).contains(user?.userId),
                     likedList = it.likeList ?: listOf(),
                     likeClicked = {
                         val mutableLikeList = it.likeList as MutableList

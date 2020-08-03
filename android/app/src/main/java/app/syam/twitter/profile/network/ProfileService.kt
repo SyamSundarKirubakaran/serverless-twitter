@@ -2,6 +2,8 @@ package app.syam.twitter.profile.network
 
 import app.syam.twitter.home.model.TweetResult
 import app.syam.twitter.profile.model.ProfileResult
+import app.syam.twitter.profile.model.SignedUrl
+import app.syam.twitter.profile.model.UpdateUser
 import app.syam.twitter.util.NetworkUtil
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -27,6 +29,20 @@ interface ProfileService {
         @Path("authId") authId: String,
         @Header("Authorization") token: String
     ): Observable<ProfileResult>
+
+    @Headers("Accept: application/json", "content-type: application/json")
+    @PATCH("user")
+    fun updateUser(
+        @Header("Authorization") token: String,
+        @Body updateUser: UpdateUser
+    ): Observable<Void>
+
+    @Headers("Accept: application/json", "content-type: application/json")
+    @GET("tweet/signedUrl/{tweetId}")
+    fun getUploadUrl(
+        @Path("tweetId") tweetId: String,
+        @Header("Authorization") token: String
+    ): Observable<SignedUrl>
 
     object Creator{
         private val placeHolderUrl: String

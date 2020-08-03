@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.syam.twitter">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".Twitter"
         android:allowBackup="true"
@@ -10,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".listing.ListingActivity"/>
+        <activity android:name=".listing.ListingActivity" />
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".auth.LoginActivity">
             <intent-filter>
@@ -20,6 +22,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".home.HomeActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="app.syam.twitter.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

@@ -45,6 +45,7 @@
         android:background="@drawable/round_blue_button"
         android:padding="@dimen/activity_general_margin"
         android:text="Follow"
+        android:textStyle="bold"
         android:textColor="@color/white"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"

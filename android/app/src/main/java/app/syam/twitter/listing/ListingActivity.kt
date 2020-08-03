@@ -48,10 +48,10 @@ class ListingActivity : AppCompatActivity() {
                         add(
                             TweetHeader(
                                 user = it,
-                                optionsVisibility = View.GONE,
+                                uploadVisibility = View.GONE,
                                 profileClicked = {},
                                 createdAt = "Serverless Twitter User",
-                                optionsClicked = {}
+                                uploadClicked = {}
                             )
                         )
                     }
@@ -65,10 +65,10 @@ class ListingActivity : AppCompatActivity() {
                                 add(
                                     TweetHeader(
                                         user = it,
-                                        optionsVisibility = View.GONE,
+                                        uploadVisibility = View.GONE,
                                         profileClicked = {},
                                         createdAt = "Serverless Twitter User",
-                                        optionsClicked = {}
+                                        uploadClicked = {}
                                     )
                                 )
                             }
@@ -80,10 +80,10 @@ class ListingActivity : AppCompatActivity() {
                                 add(
                                     TweetHeader(
                                         user = it,
-                                        optionsVisibility = View.GONE,
+                                        uploadVisibility = View.GONE,
                                         profileClicked = {},
                                         createdAt = "Serverless Twitter User",
-                                        optionsClicked = {}
+                                        uploadClicked = {}
                                     )
                                 )
                             }

@@ -1,7 +1,6 @@
 package app.syam.twitter.tweet.item
 
 import app.syam.twitter.R
-import app.syam.twitter.common.model.StoredUser
 import app.syam.twitter.tweet.model.LightWeightUser
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -11,10 +10,10 @@ import kotlinx.android.synthetic.main.item_tweet_header.*
 
 class TweetHeader(
     private val user: LightWeightUser?,
-    private val optionsVisibility: Int,
+    private val uploadVisibility: Int,
     private val createdAt: String,
     private val profileClicked: () -> Unit,
-    private val optionsClicked: () -> Unit
+    private val uploadClicked: () -> Unit
 ) : Item() {
 
     override fun bind(vh: ViewHolder, position: Int) {
@@ -24,12 +23,12 @@ class TweetHeader(
             .error(R.drawable.twitter_png)
             .into(vh.profileIcon)
 
-        vh.dropDown.visibility = optionsVisibility
+        vh.imageUpload.visibility = uploadVisibility
 
         vh.tweetTime.text = createdAt
 
         vh.profileIcon.setOnClickListener { profileClicked.invoke() }
-        vh.dropDown.setOnClickListener { optionsClicked.invoke() }
+        vh.imageUpload.setOnClickListener { uploadClicked.invoke() }
     }
 
     override fun getLayout(): Int = R.layout.item_tweet_header

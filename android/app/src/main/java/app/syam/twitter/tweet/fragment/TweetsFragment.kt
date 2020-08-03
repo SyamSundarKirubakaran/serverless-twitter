@@ -99,7 +99,7 @@ class TweetsFragment : Fragment() {
             tweetsAdapter.apply {
                 add(TweetHeader(
                     user = it.user,
-                    optionsVisibility = View.GONE,
+                    uploadVisibility = View.GONE,
                     profileClicked = {
                         startActivity(
                             Intent(
@@ -112,7 +112,7 @@ class TweetsFragment : Fragment() {
                         )
                     },
                     createdAt = it.createdAt ?: "Sometime in the past",
-                    optionsClicked = {}
+                    uploadClicked = {}
                 ))
                 add(
                     TweetBodyText(
