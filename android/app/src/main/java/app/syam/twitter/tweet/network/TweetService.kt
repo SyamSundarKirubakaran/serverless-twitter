@@ -1,5 +1,6 @@
 package app.syam.twitter.tweet.network
 
+import app.syam.twitter.BuildConfig
 import app.syam.twitter.home.model.CreateTweet
 import app.syam.twitter.home.model.TweetResult
 import app.syam.twitter.tweet.model.UpdateTweet
@@ -36,7 +37,7 @@ interface TweetService {
 
     object Creator{
         private val placeHolderUrl: String
-            get() = "https://xdx4zzvrmg.execute-api.us-east-1.amazonaws.com/dev/"
+            get() = "https://${BuildConfig.APP_ID}.execute-api.us-east-1.amazonaws.com/dev/"
         val service: TweetService
             get() {
                 val gson = GsonBuilder()

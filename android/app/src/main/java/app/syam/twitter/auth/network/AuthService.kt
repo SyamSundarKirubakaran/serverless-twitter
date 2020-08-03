@@ -1,5 +1,6 @@
 package app.syam.twitter.auth.network
 
+import app.syam.twitter.BuildConfig
 import app.syam.twitter.auth.model.AuthBody
 import app.syam.twitter.home.model.TweetResult
 import app.syam.twitter.util.NetworkUtil
@@ -21,7 +22,7 @@ interface AuthService {
 
     object Creator{
         private val placeHolderUrl: String
-            get() = "https://xdx4zzvrmg.execute-api.us-east-1.amazonaws.com/dev/"
+            get() = "https://${BuildConfig.APP_ID}.execute-api.us-east-1.amazonaws.com/dev/"
         val service: AuthService
             get() {
                 val gson = GsonBuilder()

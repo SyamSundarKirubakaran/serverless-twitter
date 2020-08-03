@@ -12,7 +12,7 @@ import retrofit2.http.*
 interface CustomService {
 
     @Multipart
-    @Headers("Accept: */*")
+    @Headers("Accept: */*", "Access-Control-Allow-Origin: *")
     @PUT("{endPoint}")
     fun uploadImage(
         @Path("endPoint") endPoint: String,

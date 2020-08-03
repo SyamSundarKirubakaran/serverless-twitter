@@ -1,5 +1,6 @@
 package app.syam.twitter.profile.network
 
+import app.syam.twitter.BuildConfig
 import app.syam.twitter.home.model.TweetResult
 import app.syam.twitter.profile.model.ProfileResult
 import app.syam.twitter.profile.model.SignedUrl
@@ -46,7 +47,7 @@ interface ProfileService {
 
     object Creator{
         private val placeHolderUrl: String
-            get() = "https://xdx4zzvrmg.execute-api.us-east-1.amazonaws.com/dev/"
+            get() = "https://${BuildConfig.APP_ID}.execute-api.us-east-1.amazonaws.com/dev/"
         val service: ProfileService
             get() {
                 val gson = GsonBuilder()
