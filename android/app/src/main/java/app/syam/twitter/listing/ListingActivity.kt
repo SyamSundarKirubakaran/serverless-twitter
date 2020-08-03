@@ -28,38 +28,5 @@ class ListingActivity : AppCompatActivity() {
             isNestedScrollingEnabled = false
         }
 
-        listingAdapter.apply {
-            add(TweetHeader(
-                user,
-                View.GONE,
-                {},
-                {}
-            ))
-            add(TweetHeader(
-                user,
-                View.GONE,
-                {},
-                {}
-            ))
-            add(TweetHeader(
-                user,
-                View.GONE,
-                {},
-                {}
-            ))
-            add(TweetHeader(
-                user,
-                View.GONE,
-                {},
-                {}
-            ))
-            add(TweetHeader(
-                user,
-                View.GONE,
-                {},
-                {}
-            ))
-        }
-
     }
 }

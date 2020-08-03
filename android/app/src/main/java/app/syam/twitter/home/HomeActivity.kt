@@ -3,12 +3,17 @@ package app.syam.twitter.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.syam.twitter.R
 import app.syam.twitter.common.item.DividerItem
 import app.syam.twitter.common.storage.SharedPreferenceManager
 import app.syam.twitter.home.item.HeaderItem
+import app.syam.twitter.home.state.HomeCallState
+import app.syam.twitter.home.viewmodel.HomeViewModel
 import app.syam.twitter.profile.ProfileActivity
 import app.syam.twitter.tweet.item.TweetBodyImage
 import app.syam.twitter.tweet.item.TweetBodyText
@@ -28,16 +33,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val user = SharedPreferenceManager.getLoggedInUser(this)
+        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        val viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
 
-        fab.setOnClickListener {
-            MaterialDialog(this).show {
-                input(maxLength = 60)
-                title(R.string.compose)
-                cornerRadius(10f)
-                positiveButton(R.string.tweet)
-            }
-        }
+        val user = SharedPreferenceManager.getLoggedInUser(this)
 
         tweetsRecycler.apply {
             layoutManager = LinearLayoutManager(context)
@@ -55,115 +54,69 @@ class HomeActivity : AppCompatActivity() {
                 )
             })
             add(DividerItem())
-            add(TweetHeader(
-                user = user,
-                optionsVisibility = View.VISIBLE,
-                profileClicked = {
-
-                },
-                optionsClicked = {
-
-                }
-            ))
-            add(TweetBodyText(
-                textContent = "I have this application that I am working on and the user can mark some items as a favorite. I want to use a heart shaped button for this functionality instead of the casual one is it possible?"
-            ))
-            add(TweetBodyImage(
-                url = "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-x-new-1.jpg"
-            ))
-            add(TweetFooter(
-                isLiked = true,
-                likedList = listOf(),
-                likeClicked = {
-
-                },
-                viewLikedClicked = {
-
-                }
-            ))
-            add(DividerItem())
-            add(TweetHeader(
-                user = user,
-                optionsVisibility = View.VISIBLE,
-                profileClicked = {
-
-                },
-                optionsClicked = {
-
-                }
-            ))
-            add(TweetBodyText(
-                textContent = "I have this application that I am working on and the user can mark some items as a favorite. I want to use a heart shaped button for this functionality instead of the casual one is it possible?"
-            ))
-            add(TweetBodyImage(
-                url = "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-x-new-1.jpg"
-            ))
-            add(TweetFooter(
-                isLiked = true,
-                likedList = listOf(),
-                likeClicked = {
-
-                },
-                viewLikedClicked = {
-
-                }
-            ))
-            add(DividerItem())
-            add(TweetHeader(
-                user = user,
-                optionsVisibility = View.VISIBLE,
-                profileClicked = {
-
-                },
-                optionsClicked = {
-
-                }
-            ))
-            add(TweetBodyText(
-                textContent = "I have this application that I am working on and the user can mark some items as a favorite. I want to use a heart shaped button for this functionality instead of the casual one is it possible?"
-            ))
-            add(TweetBodyImage(
-                url = "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-x-new-1.jpg"
-            ))
-            add(TweetFooter(
-                isLiked = true,
-                likedList = listOf(),
-                likeClicked = {
-
-                },
-                viewLikedClicked = {
-
-                }
-            ))
-            add(DividerItem())
-            add(TweetHeader(
-                user = user,
-                optionsVisibility = View.VISIBLE,
-                profileClicked = {
-
-                },
-                optionsClicked = {
-
-                }
-            ))
-            add(TweetBodyText(
-                textContent = "I have this application that I am working on and the user can mark some items as a favorite. I want to use a heart shaped button for this functionality instead of the casual one is it possible?"
-            ))
-            add(TweetBodyImage(
-                url = "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-x-new-1.jpg"
-            ))
-            add(TweetFooter(
-                isLiked = true,
-                likedList = listOf(),
-                likeClicked = {
-
-                },
-                viewLikedClicked = {
-
-                }
-            ))
-            add(DividerItem())
         }
+
+        fab.setOnClickListener {
+            MaterialDialog(this).show {
+                input(maxLength = 60)
+                title(R.string.compose)
+                cornerRadius(10f)
+                positiveButton(R.string.tweet)
+            }
+        }
+
+        viewModel.tweets()
+
+        viewModel.tweetListLiveData.observe(this, Observer {
+            when (it) {
+                is HomeCallState.Success -> {
+                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                    it.result.result?.forEach {
+                        tweetsAdapter.apply {
+                            add(TweetHeader(
+                                user = it.user,
+                                optionsVisibility = View.VISIBLE,
+                                profileClicked = {
+
+                                },
+                                optionsClicked = {
+
+                                }
+                            ))
+                            add(
+                                TweetBodyText(
+                                    textContent = it.tweet.orEmpty()
+                                )
+                            )
+                            it.imageUrl?.let { imageUrl ->
+                                add(
+                                    TweetBodyImage(
+                                        url = imageUrl
+                                    )
+                                )
+                            }
+                            add(TweetFooter(
+                                isLiked = true,
+                                likedList = listOf(),
+                                likeClicked = {
+
+                                },
+                                viewLikedClicked = {
+
+                                }
+                            ))
+                            add(DividerItem())
+                        }
+                    }
+                }
+                HomeCallState.InFlight -> {
+                    Toast.makeText(this, "InFlight", Toast.LENGTH_SHORT).show()
+                }
+                HomeCallState.Failed -> {
+                    Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
 
     }
 }

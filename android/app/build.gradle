@@ -42,6 +42,14 @@ android {
 }
 
 dependencies {
+
+    def rxjava_version = "2.1.1"
+    def retrofit_version = "2.5.0"
+    def rxadapter_version = "1.0.0"
+    def logging_interceptor_version = "3.14.1"
+    def stetho_version = "1.5.0"
+    def lifecycle_version = "2.2.0"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -58,6 +66,29 @@ dependencies {
     implementation "com.xwray:groupie:2.2.0"
     implementation "com.xwray:groupie-kotlin-android-extensions:2.2.0"
     implementation 'androidx.cardview:cardview:1.0.0'
+
+    // Networking
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjava_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rxadapter_version"
+
+    // Network Interceptors and Loggers
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
+    implementation "com.facebook.stetho:stetho:$stetho_version"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    // Lifecycle only (without ViewModel or LiveData)
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+    // Saved state module for ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.afollestad.material-dialogs:input:3.3.0'

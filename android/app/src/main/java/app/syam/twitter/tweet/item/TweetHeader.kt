@@ -2,6 +2,7 @@ package app.syam.twitter.tweet.item
 
 import app.syam.twitter.R
 import app.syam.twitter.common.model.StoredUser
+import app.syam.twitter.tweet.model.LightWeightUser
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -9,7 +10,7 @@ import kotlinx.android.synthetic.main.item_home_header.profileIcon
 import kotlinx.android.synthetic.main.item_tweet_header.*
 
 class TweetHeader(
-    private val user: StoredUser?,
+    private val user: LightWeightUser?,
     private val optionsVisibility: Int,
     private val profileClicked: () -> Unit,
     private val optionsClicked: () -> Unit
