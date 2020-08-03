@@ -1,23 +1,16 @@
 package app.syam.twitter.profile
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.syam.twitter.R
-import app.syam.twitter.common.item.DividerItem
 import app.syam.twitter.common.storage.SharedPreferenceManager
-import app.syam.twitter.home.HomeActivity
-import app.syam.twitter.listing.ListingActivity
 import app.syam.twitter.profile.item.ProfileHeader
-import app.syam.twitter.tweet.item.TweetBodyImage
-import app.syam.twitter.tweet.item.TweetBodyText
-import app.syam.twitter.tweet.item.TweetFooter
-import app.syam.twitter.tweet.item.TweetHeader
+import app.syam.twitter.tweet.fragment.USER
+import app.syam.twitter.tweet.model.LightWeightUser
+import app.syam.twitter.tweet.model.User
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
@@ -28,12 +21,20 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        val user = SharedPreferenceManager.getLoggedInUser(this)
+        val userId = intent.extras?.getString(USER)
+
+        // Get user with the received userId and also get all his tweets
+
+        val storedUser = SharedPreferenceManager.getLoggedInUser(this)
 
         profileRecycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = profileAdapter
             isNestedScrollingEnabled = false
+        }
+
+        profileAdapter.apply {
+
         }
     }
 }

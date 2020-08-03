@@ -1,5 +1,7 @@
 package app.syam.twitter.tweet.item
 
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import app.syam.twitter.R
 import app.syam.twitter.tweet.model.LightWeightUser
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -15,7 +17,21 @@ class TweetFooter(
 
     override fun bind(vh: ViewHolder, position: Int) {
 
-        vh.likeIcon.setOnClickListener { likeClicked.invoke() }
+        vh.likeIcon.setImageDrawable(
+            ContextCompat.getDrawable(
+                vh.root.context,
+                if (isLiked) R.drawable.ic_heart else R.drawable.ic_open_heart
+            )
+        )
+
+        vh.likedCount.text = "${likedList.size} Likes"
+
+        vh.likeIcon.setOnClickListener {
+            if (!isLiked)
+                likeClicked.invoke()
+            else
+                Toast.makeText(vh.root.context, "Already Liked", Toast.LENGTH_SHORT).show()
+        }
         vh.likedCount.setOnClickListener { viewLikedClicked.invoke() }
     }
 

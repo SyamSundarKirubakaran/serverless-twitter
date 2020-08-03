@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/likeIcon"
-        android:src="@drawable/ic_heart"
+        android:src="@drawable/ic_open_heart"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="12dp"
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/likedCount"
-        android:text="100 Likes"
+        android:text="n Likes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/sub_text_light"

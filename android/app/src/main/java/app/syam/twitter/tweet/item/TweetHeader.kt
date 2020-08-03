@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.item_tweet_header.*
 class TweetHeader(
     private val user: LightWeightUser?,
     private val optionsVisibility: Int,
+    private val createdAt: String,
     private val profileClicked: () -> Unit,
     private val optionsClicked: () -> Unit
 ) : Item() {
@@ -24,6 +25,8 @@ class TweetHeader(
             .into(vh.profileIcon)
 
         vh.dropDown.visibility = optionsVisibility
+
+        vh.tweetTime.text = createdAt
 
         vh.profileIcon.setOnClickListener { profileClicked.invoke() }
         vh.dropDown.setOnClickListener { optionsClicked.invoke() }

@@ -27,10 +27,6 @@ android {
         }
     }
 
-// To inline the bytecode built with JVM target 1.8 into
-// bytecode that is being built with JVM target 1.6. (e.g. navArgs)
-
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -49,6 +45,8 @@ dependencies {
     def logging_interceptor_version = "3.14.1"
     def stetho_version = "1.5.0"
     def lifecycle_version = "2.2.0"
+    def swipe_refresh = "1.1.0"
+    def fragment_ktx_version = "1.2.5"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -89,6 +87,12 @@ dependencies {
 
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+
+    // Swipe refresh layout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh"
+
+    // Kotlin Extensions - Fragments
+    implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
 
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.afollestad.material-dialogs:input:3.3.0'

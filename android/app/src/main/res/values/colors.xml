@@ -8,4 +8,11 @@
     <color name="sub_text_light">#BCBCBC</color>
     <color name="blue_text">#171F4B</color>
     <color name="divider_gray">#454444</color>
+
+    <color name="progress_bg_orange">#48FF9800</color>
+    <color name="progress_orange">#ff9800</color>
+    <color name="progress_bg_green">#5B4CAF50</color>
+    <color name="progress_green">#4caf50</color>
+    <color name="progress_bg_blue">#4F3F51B5</color>
+    <color name="progress_blue">#3f51b5</color>
 </resources>
