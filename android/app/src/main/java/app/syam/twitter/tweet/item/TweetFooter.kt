@@ -24,7 +24,7 @@ class TweetFooter(
             )
         )
 
-        vh.likedCount.text = "${likedList.size} Likes"
+        vh.likedCount.text = "${likedList.size} ${if(likedList.size == 1) "Like" else "Likes"}"
 
         vh.likeIcon.setOnClickListener {
             if (!isLiked)

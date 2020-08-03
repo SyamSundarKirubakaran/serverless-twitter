@@ -198,10 +198,21 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
         val url = (signedUrlLiveData.value as SignedUrlState.Success).result.url
 
+        val mainContext = url?.substring(44).orEmpty()
+        val strCollection = mainContext.split("?")
+        val queryList = strCollection[1].split("&")
+
         compositeDisposable.add(
             CustomService.Creator.service.uploadImage(
-                endPoint = url?.substring(44) ?: "",
-                photo = data
+                endPoint = strCollection[0],
+                photo = data,
+                algorithm = queryList[0].substring(16),
+                cred = queryList[1].substring(17),
+                date = queryList[2].substring(11),
+                expire = queryList[3].substring(14),
+                security = queryList[4].substring(21),
+                sign = queryList[5].substring(16),
+                signHeader = queryList[6].substring(20)
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

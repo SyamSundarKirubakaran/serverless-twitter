@@ -160,7 +160,11 @@ class ProfileActivity : AppCompatActivity() {
                 viewModelCopy.processLocalImage(contentResolver = contentResolver,
                     token = SharedPreferenceManager.getLoggedInUser(this)?.token.orEmpty(),
                     uri = data.data)
+            } else {
+                finish()
             }
+        } else {
+            finish()
         }
     }
 
