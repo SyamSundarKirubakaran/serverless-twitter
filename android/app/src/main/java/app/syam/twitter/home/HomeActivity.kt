@@ -1,32 +1,20 @@
 package app.syam.twitter.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import app.syam.twitter.R
 import app.syam.twitter.common.fragment.EmptyFragment
 import app.syam.twitter.common.fragment.InProgressFragment
-import app.syam.twitter.common.item.DividerItem
 import app.syam.twitter.common.storage.SharedPreferenceManager
-import app.syam.twitter.home.item.HeaderItem
 import app.syam.twitter.home.state.HomeCallState
 import app.syam.twitter.home.state.LikeCallState
 import app.syam.twitter.home.viewmodel.HomeViewModel
-import app.syam.twitter.profile.ProfileActivity
 import app.syam.twitter.tweet.fragment.TweetsFragment
-import app.syam.twitter.tweet.item.TweetBodyImage
-import app.syam.twitter.tweet.item.TweetBodyText
-import app.syam.twitter.tweet.item.TweetFooter
-import app.syam.twitter.tweet.item.TweetHeader
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -60,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
                             TweetsFragment.newInstance(it.result.result)
                         )
                         .commitAllowingStateLoss()
+                    fab.visibility = View.VISIBLE
                 }
                 HomeCallState.InFlight -> {
                     supportFragmentManager.beginTransaction()
@@ -68,6 +57,7 @@ class HomeActivity : AppCompatActivity() {
                             InProgressFragment()
                         )
                         .commitAllowingStateLoss()
+                    fab.visibility = View.GONE
                 }
                 HomeCallState.Failed -> {
                     supportFragmentManager.beginTransaction()
@@ -76,6 +66,7 @@ class HomeActivity : AppCompatActivity() {
                             EmptyFragment.newInstance(errorText = "Error Fetching Tweets")
                         )
                         .commitAllowingStateLoss()
+                    fab.visibility = View.GONE
                 }
             }
         })
@@ -92,6 +83,7 @@ class HomeActivity : AppCompatActivity() {
                             InProgressFragment()
                         )
                         .commitAllowingStateLoss()
+                    fab.visibility = View.GONE
                 }
                 LikeCallState.Failed -> {
                     viewModel.tweets()

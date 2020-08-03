@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.syam.twitter.R
 import app.syam.twitter.common.storage.SharedPreferenceManager
 import app.syam.twitter.tweet.fragment.SOURCE
+import app.syam.twitter.tweet.fragment.TARGET
 import app.syam.twitter.tweet.fragment.TWEET
+import app.syam.twitter.tweet.fragment.USER
 import app.syam.twitter.tweet.item.TweetHeader
 import app.syam.twitter.tweet.model.Tweet
+import app.syam.twitter.tweet.model.User
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_listing.*
@@ -24,9 +27,13 @@ class ListingActivity : AppCompatActivity() {
 
         val source = intent.extras?.getString(SOURCE)
 
-        val tweet = intent.extras?.get(TWEET) as Tweet
+        val tweet = intent.extras?.get(TWEET) as Tweet?
 
-        val user = SharedPreferenceManager.getLoggedInUser(this)
+        val user = intent.extras?.get(USER) as User?
+
+        val target = intent.extras?.getString(TARGET)
+
+        val storedUser = SharedPreferenceManager.getLoggedInUser(this)
 
         listingRecycler.apply {
             layoutManager = LinearLayoutManager(context)
@@ -36,7 +43,7 @@ class ListingActivity : AppCompatActivity() {
 
         when(source){
             "tweet" -> {
-                tweet.likeList?.forEach {
+                tweet?.likeList?.forEach {
                     listingAdapter.apply {
                         add(
                             TweetHeader(
@@ -47,6 +54,40 @@ class ListingActivity : AppCompatActivity() {
                                 optionsClicked = {}
                             )
                         )
+                    }
+                }
+            }
+            "profile" -> {
+                when(target){
+                    "follower" -> {
+                        user?.followerList?.forEach {
+                            listingAdapter.apply {
+                                add(
+                                    TweetHeader(
+                                        user = it,
+                                        optionsVisibility = View.GONE,
+                                        profileClicked = {},
+                                        createdAt = "Serverless Twitter User",
+                                        optionsClicked = {}
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    "following" -> {
+                        user?.followingList?.forEach {
+                            listingAdapter.apply {
+                                add(
+                                    TweetHeader(
+                                        user = it,
+                                        optionsVisibility = View.GONE,
+                                        profileClicked = {},
+                                        createdAt = "Serverless Twitter User",
+                                        optionsClicked = {}
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package app.syam.twitter.tweet.fragment
+package app.syam.twitter.profile.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,31 +11,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.syam.twitter.R
 import app.syam.twitter.common.item.DividerItem
 import app.syam.twitter.common.storage.SharedPreferenceManager
-import app.syam.twitter.home.item.HeaderItem
-import app.syam.twitter.home.viewmodel.HomeViewModel
 import app.syam.twitter.listing.ListingActivity
 import app.syam.twitter.profile.ProfileActivity
+import app.syam.twitter.profile.item.ProfileHeader
+import app.syam.twitter.profile.viewmodel.ProfileViewModel
+import app.syam.twitter.tweet.fragment.*
 import app.syam.twitter.tweet.item.TweetBodyImage
 import app.syam.twitter.tweet.item.TweetBodyText
 import app.syam.twitter.tweet.item.TweetFooter
 import app.syam.twitter.tweet.item.TweetHeader
 import app.syam.twitter.tweet.model.LightWeightUser
 import app.syam.twitter.tweet.model.Tweet
+import app.syam.twitter.tweet.model.User
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.fragment_tweets.*
+import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_tweets.swipeContainer
 
-const val TWEETS_LIST = "TWEETS_LIST"
-const val USER = "USER"
-const val TWEET = "TWEET"
-const val SOURCE = "SOURCE"
-const val TARGET = "TARGET"
+class ProfileFragment : Fragment() {
 
-class TweetsFragment : Fragment() {
+    private val viewModel: ProfileViewModel by activityViewModels()
 
-    private val viewModel: HomeViewModel by activityViewModels()
-
-    private val tweetsAdapter = GroupAdapter<ViewHolder>()
+    private val profileAdapter = GroupAdapter<ViewHolder>()
 
     private val tweetsList by lazy {
         requireArguments().getParcelableArrayList<Tweet>(
@@ -43,11 +40,18 @@ class TweetsFragment : Fragment() {
         ) ?: arrayListOf()
     }
 
+    private val receivedUser by lazy {
+        requireArguments().getParcelable<User>(
+            USER
+        )
+    }
+
     companion object {
-        fun newInstance(tweetsList: List<Tweet>?) = TweetsFragment().apply {
+        fun newInstance(tweetsList: List<Tweet>?, user: User?) = ProfileFragment().apply {
             arguments = Bundle().apply {
                 tweetsList?.let {
                     putParcelableArrayList(TWEETS_LIST, tweetsList as ArrayList)
+                    putParcelable(USER, user)
                 }
             }
         }
@@ -57,14 +61,14 @@ class TweetsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_tweets, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_profile, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tweetsRecycler.apply {
+        profileRecycler.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = tweetsAdapter
+            adapter = profileAdapter
             isNestedScrollingEnabled = false
         }
 
@@ -75,42 +79,60 @@ class TweetsFragment : Fragment() {
         )
 
         swipeContainer.setOnRefreshListener {
-            viewModel.tweets()
+            viewModel.initProfileLoad(receivedUser?.userId.orEmpty())
         }
 
         val user = SharedPreferenceManager.getLoggedInUser(context)
 
-        tweetsAdapter.apply {
-            add(HeaderItem(storedUser = user) {
-                startActivity(
-                    Intent(
-                        context,
-                        ProfileActivity::class.java
-                    ).putExtra(
-                        USER,
-                        user?.userId
-                    )
+        profileAdapter.apply {
+            add(
+                ProfileHeader(
+                    user = receivedUser,
+                    followersClicked = {
+                        startActivity(
+                            Intent(
+                                context,
+                                ListingActivity::class.java
+                            ).putExtra(
+                                USER,
+                                receivedUser
+                            ).putExtra(
+                                SOURCE,
+                                "profile"
+                            ).putExtra(
+                                TARGET,
+                                "follower"
+                            )
+                        )
+                    },
+                    followingClicked = {
+                        startActivity(
+                            Intent(
+                                context,
+                                ListingActivity::class.java
+                            ).putExtra(
+                                USER,
+                                receivedUser
+                            ).putExtra(
+                                SOURCE,
+                                "profile"
+                            ).putExtra(
+                                TARGET,
+                                "following"
+                            )
+                        )
+                    }
                 )
-            })
+            )
             add(DividerItem())
         }
 
         tweetsList.forEach {
-            tweetsAdapter.apply {
+            profileAdapter.apply {
                 add(TweetHeader(
                     user = it.user,
                     optionsVisibility = View.GONE,
-                    profileClicked = {
-                        startActivity(
-                            Intent(
-                                context,
-                                ProfileActivity::class.java
-                            ).putExtra(
-                                USER,
-                                it.user?.userId
-                            )
-                        )
-                    },
+                    profileClicked = {},
                     createdAt = it.createdAt ?: "Sometime in the past",
                     optionsClicked = {}
                 ))

@@ -6,10 +6,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import app.syam.twitter.home.HomeActivity
 import app.syam.twitter.R
+import app.syam.twitter.auth.viewmodel.LoginViewModel
 import app.syam.twitter.common.model.StoredUser
 import app.syam.twitter.common.storage.SharedPreferenceManager
+import app.syam.twitter.home.viewmodel.HomeViewModel
 import app.syam.twitter.util.EXTRA_CLEAR_CREDENTIALS
 import com.auth0.android.Auth0
 import com.auth0.android.Auth0Exception
@@ -111,17 +115,24 @@ class LoginActivity : AppCompatActivity() {
                                             token = credentials.accessToken.orEmpty()
                                         )
 
-                                        SharedPreferenceManager.setUser(this@LoginActivity, user)
-                                            .subscribeOn(Schedulers.io())
-                                            .subscribe({
-                                                startActivity(
-                                                    Intent(
-                                                        this@LoginActivity,
-                                                        HomeActivity::class.java
+                                        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+                                        val viewModel = ViewModelProvider(this@LoginActivity, factory).get(LoginViewModel::class.java)
+
+                                        viewModel.createUser(user)
+
+                                        viewModel.createUserLiveData.observe(this@LoginActivity, Observer {
+                                            SharedPreferenceManager.setUser(this@LoginActivity, user)
+                                                .subscribeOn(Schedulers.io())
+                                                .subscribe({
+                                                    startActivity(
+                                                        Intent(
+                                                            this@LoginActivity,
+                                                            HomeActivity::class.java
+                                                        )
                                                     )
-                                                )
-                                                finish()
-                                            }, {})
+                                                    finish()
+                                                }, {})
+                                        })
                                     }
                                 }
 

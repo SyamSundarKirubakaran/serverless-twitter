@@ -10,7 +10,8 @@ import kotlinx.android.synthetic.main.item_profile_header.*
 
 class ProfileHeader(
     private val user: User?,
-    private val followersClicked: () -> Unit
+    private val followersClicked: () -> Unit,
+    private val followingClicked: () -> Unit
 ) : Item() {
 
     override fun bind(vh: ViewHolder, position: Int) {
@@ -32,6 +33,7 @@ class ProfileHeader(
         vh.followingCount.text = "${user?.followingList?.size} Following"
 
         vh.followersCount.setOnClickListener { followersClicked.invoke() }
+        vh.followingCount.setOnClickListener { followingClicked.invoke() }
     }
 
     override fun getLayout(): Int = R.layout.item_profile_header

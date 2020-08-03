@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class HomeResult(
+data class TweetResult(
     @SerializedName("result")
     val result: List<Tweet>?
 ): Parcelable
