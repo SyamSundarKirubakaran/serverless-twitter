@@ -31,8 +31,8 @@
 - Make sure to replace `auth0_domain` with your Auth0 domain, that you got when you created the Auth0 App.
 - Update `strings.xml` in `res` directory of the android app.
 ```
-    Set `com_auth0_client_id` to **Client ID** from the App created in Auth0
-    Set `com_auth0_domain` to **Domain** from the App created in Auth0
+    Set `com_auth0_client_id` to `Client ID` from the App created in Auth0
+    Set `com_auth0_domain` to `Domain` from the App created in Auth0
 ```
 
 <p align="center">
