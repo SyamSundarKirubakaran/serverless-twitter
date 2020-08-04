@@ -1,3 +1,5 @@
 <p align="center">
-  <img src="docs/img/sls_banner.jpg">
+  <img src="docs/img/serverless_banner.jpg">
 </p>
+
+### Architecture
