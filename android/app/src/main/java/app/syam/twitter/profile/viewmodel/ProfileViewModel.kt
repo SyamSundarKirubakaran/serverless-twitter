@@ -102,16 +102,57 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 authId = authId
             )
                 .subscribeOn(Schedulers.io())
-                .flatMap {
+                .map {
                     val tempList = it.result?.followingList as MutableList<LightWeightUser>
                     tempList.add(lightWeightUser)
                     val tempUpdateUser = updateUser.copy(
                         followingList = tempList
                     )
-                    ProfileService.Creator.service.updateUser(
-                        token = "Bearer $token",
-                        updateUser = tempUpdateUser
+                    tempUpdateUser
+                }
+                .flatMap {
+                    Observable.zip(
+                        Observable.just(true),
+                        ProfileService.Creator.service.updateUser(
+                            token = "Bearer $token",
+                            updateUser = it
+                        ),
+                        BiFunction { t1: Boolean, t2: Boolean -> t1 to t2 })
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { GeneralCallState.Success as GeneralCallState }
+                .startWith(GeneralCallState.InFlight as GeneralCallState)
+                .onErrorReturn { GeneralCallState.Failed }
+                .subscribe { updateLiveData.postValue(it) }
+        )
+    }
+
+    fun reverseUpdateUser(userId: String, updateUser: UpdateUser, receivedUserId: String) {
+        val (authType, authId) = userId.split('|')
+        val token = SharedPreferenceManager.getLoggedInUser(context)?.token.orEmpty()
+        compositeDisposable.add(
+            ProfileService.Creator.service.getUser(
+                token = "Bearer $token",
+                authType = authType,
+                authId = authId
+            )
+                .subscribeOn(Schedulers.io())
+                .map {
+                    val tempList = it.result?.followingList as MutableList<LightWeightUser>
+                    tempList.remove(tempList.find { it.userId == receivedUserId })
+                    val tempUpdateUser = updateUser.copy(
+                        followingList = tempList
                     )
+                    tempUpdateUser
+                }
+                .flatMap {
+                    Observable.zip(
+                        Observable.just(true),
+                        ProfileService.Creator.service.updateUser(
+                            token = "Bearer $token",
+                            updateUser = it
+                        ),
+                        BiFunction { t1: Boolean, t2: Boolean -> t1 to t2 })
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { GeneralCallState.Success as GeneralCallState }

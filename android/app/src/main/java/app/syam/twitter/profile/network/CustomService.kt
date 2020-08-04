@@ -3,6 +3,7 @@ package app.syam.twitter.profile.network
 import app.syam.twitter.util.NetworkUtil
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
@@ -24,7 +25,7 @@ interface CustomService {
         @Query("X-Amz-Security-Token") security: String,
         @Query("X-Amz-Signature") sign: String,
         @Query("X-Amz-SignedHeaders") signHeader: String
-    ): Single<Void>
+    ): Observable<Void>
 
     object Creator {
         private val placeHolderUrl: String

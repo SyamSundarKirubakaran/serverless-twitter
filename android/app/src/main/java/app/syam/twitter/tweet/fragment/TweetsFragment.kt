@@ -127,19 +127,23 @@ class TweetsFragment : Fragment() {
                     )
                 }
                 add(TweetFooter(
-                    isLiked = (it.likeList?.map { it.userId } ?: listOf<String>()).contains(user?.userId),
+                    isLiked = (it.likeList?.map { it.userId }
+                        ?: listOf<String>()).contains(user?.userId),
                     likedList = it.likeList ?: listOf(),
-                    likeClicked = {
+                    likeClicked = { type ->
                         val mutableLikeList = it.likeList as MutableList
-                        mutableLikeList.add(
-                            LightWeightUser(
-                                userId = user?.userId,
-                                name = user?.name,
-                                email = user?.email,
-                                imageUrl = user?.imageUrl,
-                                isVerified = user?.isVerified
+                        if (type)
+                            mutableLikeList.add(
+                                LightWeightUser(
+                                    userId = user?.userId,
+                                    name = user?.name,
+                                    email = user?.email,
+                                    imageUrl = user?.imageUrl,
+                                    isVerified = user?.isVerified
+                                )
                             )
-                        )
+                        else
+                            mutableLikeList.remove(mutableLikeList.find { it.userId == user?.userId })
                         viewModel.likeTweet(
                             tweetId = it.id.orEmpty(),
                             likeList = mutableLikeList

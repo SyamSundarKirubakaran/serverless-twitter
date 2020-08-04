@@ -91,10 +91,8 @@ class ProfileFragment : Fragment() {
             add(
                 ProfileHeader(
                     user = receivedUser,
-                    following = receivedUser?.userId == storedUser?.userId ||
-                            (receivedUser?.followerList?.map { it.userId } ?: listOf()).contains(
-                                user?.userId
-                            ),
+                    following = (receivedUser?.followerList?.map { it.userId } ?: listOf()).contains(user?.userId),
+                    explicitFollowBlock = receivedUser?.userId == storedUser?.userId,
                     followersClicked = {
                         startActivity(
                             Intent(
@@ -129,33 +127,46 @@ class ProfileFragment : Fragment() {
                             )
                         )
                     },
-                    followClicked = {
+                    followClicked = { type ->
                         val mutableFollowerList =
                             receivedUser?.followerList as MutableList<LightWeightUser>
-                        mutableFollowerList.add(
-                            LightWeightUser(
-                                userId = storedUser?.userId,
-                                name = storedUser?.name,
-                                email = storedUser?.email,
-                                imageUrl = storedUser?.imageUrl,
-                                isVerified = storedUser?.isVerified
+                        if (type) {
+                            mutableFollowerList.add(
+                                LightWeightUser(
+                                    userId = storedUser?.userId,
+                                    name = storedUser?.name,
+                                    email = storedUser?.email,
+                                    imageUrl = storedUser?.imageUrl,
+                                    isVerified = storedUser?.isVerified
+                                )
                             )
-                        )
-                        viewModel.updateUser(
-                            userId = storedUser?.userId.orEmpty(),
-                            updateUser = UpdateUser(
-                                targetUserId = receivedUser?.userId,
-                                followerList = mutableFollowerList,
-                                followingList = mutableListOf()
-                            ),
-                            lightWeightUser = LightWeightUser(
-                                userId = receivedUser?.userId,
-                                name = receivedUser?.name,
-                                email = receivedUser?.email,
-                                imageUrl = receivedUser?.imageUrl,
-                                isVerified = receivedUser?.isVerified
+                            viewModel.updateUser(
+                                userId = storedUser?.userId.orEmpty(),
+                                updateUser = UpdateUser(
+                                    targetUserId = receivedUser?.userId,
+                                    followerList = mutableFollowerList,
+                                    followingList = mutableListOf()
+                                ),
+                                lightWeightUser = LightWeightUser(
+                                    userId = receivedUser?.userId,
+                                    name = receivedUser?.name,
+                                    email = receivedUser?.email,
+                                    imageUrl = receivedUser?.imageUrl,
+                                    isVerified = receivedUser?.isVerified
+                                )
                             )
-                        )
+                        } else {
+                            mutableFollowerList.remove(mutableFollowerList.find { it.userId == storedUser?.userId })
+                            viewModel.reverseUpdateUser(
+                                userId = storedUser?.userId.orEmpty(),
+                                updateUser = UpdateUser(
+                                    targetUserId = receivedUser?.userId,
+                                    followerList = mutableFollowerList,
+                                    followingList = mutableListOf()
+                                ),
+                                receivedUserId = receivedUser?.userId.orEmpty()
+                            )
+                        }
                     }
                 )
             )
@@ -190,17 +201,20 @@ class ProfileFragment : Fragment() {
                     isLiked = (it.likeList?.map { it.userId }
                         ?: listOf<String>()).contains(user?.userId),
                     likedList = it.likeList ?: listOf(),
-                    likeClicked = {
+                    likeClicked = { type ->
                         val mutableLikeList = it.likeList as MutableList
-                        mutableLikeList.add(
-                            LightWeightUser(
-                                userId = user?.userId,
-                                name = user?.name,
-                                email = user?.email,
-                                imageUrl = user?.imageUrl,
-                                isVerified = user?.isVerified
+                        if (type)
+                            mutableLikeList.add(
+                                LightWeightUser(
+                                    userId = user?.userId,
+                                    name = user?.name,
+                                    email = user?.email,
+                                    imageUrl = user?.imageUrl,
+                                    isVerified = user?.isVerified
+                                )
                             )
-                        )
+                        else
+                            mutableLikeList.remove(mutableLikeList.find { it.userId == user?.userId })
                         viewModel.likeTweet(
                             tweetId = it.id.orEmpty(),
                             likeList = mutableLikeList

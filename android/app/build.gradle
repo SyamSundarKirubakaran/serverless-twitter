@@ -23,7 +23,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            buildConfigField "String", "APP_ID", "\"\""
+            buildConfigField "String", "APP_ID", "\"xdx4zzvrmg\""
         }
         release {
             minifyEnabled false

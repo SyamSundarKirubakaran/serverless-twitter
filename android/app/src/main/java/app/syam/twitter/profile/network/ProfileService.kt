@@ -36,7 +36,7 @@ interface ProfileService {
     fun updateUser(
         @Header("Authorization") token: String,
         @Body updateUser: UpdateUser
-    ): Observable<Void>
+    ): Observable<Boolean>
 
     @Headers("Accept: application/json", "content-type: application/json")
     @GET("tweet/signedUrl/{tweetId}")

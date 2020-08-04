@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_tweet_footer.*
 class TweetFooter(
     private val isLiked: Boolean,
     private val likedList: List<LightWeightUser>,
-    private val likeClicked: () -> Unit,
+    private val likeClicked: (type: Boolean) -> Unit,
     private val viewLikedClicked: () -> Unit
 ) : Item() {
 
@@ -24,14 +24,9 @@ class TweetFooter(
             )
         )
 
-        vh.likedCount.text = "${likedList.size} ${if(likedList.size == 1) "Like" else "Likes"}"
+        vh.likedCount.text = "${likedList.size} ${if (likedList.size == 1) "Like" else "Likes"}"
 
-        vh.likeIcon.setOnClickListener {
-            if (!isLiked)
-                likeClicked.invoke()
-            else
-                Toast.makeText(vh.root.context, "Already Liked", Toast.LENGTH_SHORT).show()
-        }
+        vh.likeIcon.setOnClickListener { likeClicked.invoke(!isLiked) }
         vh.likedCount.setOnClickListener { viewLikedClicked.invoke() }
     }
 

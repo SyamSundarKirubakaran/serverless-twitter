@@ -2,7 +2,6 @@ package app.syam.twitter.profile.item
 
 import android.view.View
 import app.syam.twitter.R
-import app.syam.twitter.tweet.model.LightWeightUser
 import app.syam.twitter.tweet.model.User
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -12,9 +11,10 @@ import kotlinx.android.synthetic.main.item_profile_header.*
 class ProfileHeader(
     private val user: User?,
     private val following: Boolean,
+    private val explicitFollowBlock: Boolean,
     private val followersClicked: () -> Unit,
     private val followingClicked: () -> Unit,
-    private val followClicked: () -> Unit
+    private val followClicked: (type: Boolean) -> Unit
 ) : Item() {
 
     override fun bind(vh: ViewHolder, position: Int) {
@@ -35,11 +35,12 @@ class ProfileHeader(
         vh.followersCount.text = "${user?.followerList?.size} Followers"
         vh.followingCount.text = "${user?.followingList?.size} Following"
 
-        vh.followButton.visibility = if(following) View.GONE else View.VISIBLE
+        vh.followButton.visibility = if(explicitFollowBlock) View.GONE else View.VISIBLE
+        vh.followButton.text = if(following) "Unfollow" else "Follow"
 
         vh.followersCount.setOnClickListener { followersClicked.invoke() }
         vh.followingCount.setOnClickListener { followingClicked.invoke() }
-        vh.followButton.setOnClickListener { followClicked.invoke() }
+        vh.followButton.setOnClickListener { followClicked.invoke(!following) }
     }
 
     override fun getLayout(): Int = R.layout.item_profile_header
