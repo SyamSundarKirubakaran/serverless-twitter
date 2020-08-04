@@ -30,6 +30,7 @@ This repository contains code that helps you build a twitter clone and helps you
 
 You can also import the provided Postman Collection to take a quick look at the exposed endpoints. Also make sure to fill up `apiId` and `authToken` environment variables to make endpoints intract with the deplpoyed serverless application.
 
+**Screenshots**<br />
 <img src="docs/img/one.png" height=520 width =270 />
 <img src="docs/img/two.png" height=520 width =270 />
 <img src="docs/img/three.png" height=520 width =270 />
