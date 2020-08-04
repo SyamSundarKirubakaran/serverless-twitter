@@ -35,9 +35,10 @@
     Set `com_auth0_domain` to `Domain` from the App created in Auth0
 ```
 
-<p align="center">
-  <img src="img/sls_twitter.gif">
-</p>
+**Screenshots**<br />
+<img src="img/one.png" height=520 width =270 />
+<img src="img/two.png" height=520 width =270 />
+<img src="img/three.png" height=520 width =270 />
 
 # iOS Setup
 - :warning: Work In Progress :warning:
