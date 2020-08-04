@@ -17,7 +17,7 @@ This repository contains code that helps you build a twitter clone and helps you
     -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/specific/{authType}/{userId}`
 - **PATCH** - Like / Unlike a Tweet 
     -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}`
-- **PATCH** - Follow / Unfollow a Tweet 
+- **PATCH** - Follow / Unfollow an User 
     -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user`
 - **GET** - Get All Users 
     -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user`
