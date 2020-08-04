@@ -1,0 +1,346 @@
+{
+	"info": {
+		"_postman_id": "aebfcd20-41d8-458e-a204-982c98bbad81",
+		"name": "Serverless Twitter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "All Tweets",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"tweet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Tweets",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/specific/google-oauth2/XXXXXXXXXXXXXXXXXXX",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"tweet",
+						"specific",
+						"google-oauth2",
+						"XXXXXXXXXXXXXXXXXXX"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Tweet",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tweet\": \"This will be my First Tweet\",\n    \"user\": {\n        \"userId\": \"google-oauth2|XXXXXXXXXXXXXXXXXX\",\n        \"name\": \"Syam Sundar K\",\n        \"email\": \"sample@gmail.com\",\n        \"imageUrl\": \"https://lh3.googleusercontent.com/a-/AOh14GgcBIndzOMc-yKUuey3ccN4Ru8rTn1k2V7tPtXVsA\",\n        \"isVerified\": true\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"tweet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Syam Sundar K\",\n    \"email\": \"sample@gmail.com\",\n    \"imageUrl\": \"https://lh3.googleusercontent.com/a-/AOh14GgcBIndzOMc-yKUuey3ccN4Ru8rTn1k2V7tPtXVsA\",\n    \"isVerified\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Tweet",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"likeList\": [\n        {\n            \"userId\": \"google-oauth2|XXXXXXXXXXXXXXXXXXX\",\n            \"name\": \"Syam Sundar K\",\n            \"email\": \"sample@gmail.com\",\n            \"imageUrl\": \"https://lh3.googleusercontent.com/a-/AOh14GgcBIndzOMc-yKUuey3ccN4Ru8rTn1k2V7tPtXVsA\",\n            \"isVerified\": true\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/XXXXXXXXXXXXXXXXX",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"tweet",
+						"XXXXXXXXXXXXXXXXX"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"followingList\": [\n        {\n            \"userId\": \"google-oauth2|XXXXXXXXXXXXXXXXXX\",\n            \"name\": \"Syam Sundar K\",\n            \"email\": \"sample@gmail.com\",\n            \"imageUrl\": \"https://lh3.googleusercontent.com/a-/AOh14GgcBIndzOMc-yKUuey3ccN4Ru8rTn1k2V7tPtXVsA\",\n            \"isVerified\": true\n        }\n    ],\n    \"targetUserId\": \"google-oauth2|XXXXXXXXXXXXXXXXXX\",\n    \"followerList\": [\n        {\n            \"userId\": \"google-oauth2|XXXXXXXXXXXXXXXXXX\",\n            \"name\": \"Syam Sundar K\",\n            \"email\": \"sample@gmail.com\",\n            \"imageUrl\": \"https://lh3.googleusercontent.com/a-/AOh14GgcBIndzOMc-yKUuey3ccN4Ru8rTn1k2V7tPtXVsA\",\n            \"isVerified\": true\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Specific User",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user/specific/google-oauth2/XXXXXXXXXXXXXXXXXXX",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"user",
+						"specific",
+						"google-oauth2",
+						"XXXXXXXXXXXXXXXXXXX"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Tweet",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/XXXXXXXXXXXXXXXXX",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"tweet",
+						"XXXXXXXXXXXXXXXXX"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload URL",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/signedUrl/XXXXXXXXXXXXXXXXXXXX",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"tweet",
+						"signedUrl",
+						"XXXXXXXXXXXXXXXXXXXX"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
