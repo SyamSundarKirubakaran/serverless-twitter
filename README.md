@@ -7,41 +7,20 @@ This repository contains code that helps you build a twitter clone and helps you
 
 ### Functions
 
-- **POST** - Create User 
-    - `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user`
-- **POST** - Create Tweet 
-    -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet`
-- **GET** - Get All Tweets 
-    -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet`
-- **GET** - Get Tweets by Specific User 
-    -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/specific/{authType}/{userId}`
-- **PATCH** - Like / Unlike a Tweet 
-    -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}`
-- **PATCH** - Follow / Unfollow an User 
-    -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user`
-- **GET** - Get All Users 
-    -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user`
-- **GET** - Get Specific User 
-    -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user/specific/{authType}/{userId}`
-- **DELETE** - Delete Tweet 
-    -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}`
-- **GET** - Get Signed URL for Image Upload 
-    -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/signedUrl/{tweetId}`
-
 | Purpose  | Method | Endpoint |
 | ------------- | ------------- | ------------- |
-| Create User   | POST  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user`  |
-| Create Tweet  | POST  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet`  |
-| Get All Tweets   | GET  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet`  |
-| Get Tweets by Specific User  | GET  |  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/specific/{authType}/{userId}`  |
-| Like / Unlike a Tweet   | PATCH  |  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}`  |
-| Follow / Unfollow an User   | PATCH  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user`  |
-| Get All Users   | GET  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user` |
-| Get Specific User   | GET  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user/specific/{authType}/{userId}`  |
-| Delete Tweet  | DELETE  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}`  |
-| Get Signed URL for Image Upload   | GET  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/signedUrl/{tweetId}`  |
+| Create User   | POST  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user  |
+| Create Tweet  | POST  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet  |
+| Get All Tweets   | GET  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet  |
+| Get Tweets by Specific User  | GET  |  https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/specific/{authType}/{userId}  |
+| Like / Unlike a Tweet   | PATCH  |  https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}  |
+| Follow / Unfollow an User   | PATCH  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user  |
+| Get All Users   | GET  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user |
+| Get Specific User   | GET  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user/specific/{authType}/{userId}  |
+| Delete Tweet  | DELETE  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}  |
+| Get Signed URL for Image Upload   | GET  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/signedUrl/{tweetId}  |
 
-You can also import the provided Postman Collection to take a quick look at the exposed endpoints. Also make sure to fill up `apiId` and `authToken` environment variables to make endpoints intract with the deplpoyed serverless application.
+You can also import the provided Postman Collection to take a quick look at the exposed endpoints. Also make sure to fill up apiId and authToken environment variables to make endpoints intract with the deplpoyed serverless application.
 
 **Screenshots**<br />
 <img src="docs/img/one.png" height=520 width =270 />
