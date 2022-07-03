@@ -20,6 +20,8 @@ This repository contains code that helps you build a twitter clone and helps you
 | Delete Tweet  | DELETE  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}  |
 | Get Signed URL for Image Upload   | GET  | https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/signedUrl/{tweetId}  |
 
+ps: replace `us-east-1` with your aws deployment region.
+
 You can also import the provided Postman Collection to take a quick look at the exposed endpoints. Also make sure to fill up apiId and authToken environment variables to make endpoints intract with the deplpoyed serverless application.
 
 **Screenshots**<br />
