@@ -28,10 +28,18 @@ This repository contains code that helps you build a twitter clone and helps you
 - **GET** - Get Signed URL for Image Upload 
     -  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/signedUrl/{tweetId}`
 
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| Purpose  | Method | Endpoint |
+| ------------- | ------------- | ------------- |
+| Create User   | POST  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user`  |
+| Create Tweet  | POST  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet`  |
+| Get All Tweets   | GET  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet`  |
+| Get Tweets by Specific User  | GET  |  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/specific/{authType}/{userId}`  |
+| Like / Unlike a Tweet   | PATCH  |  `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}`  |
+| Follow / Unfollow an User   | PATCH  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user`  |
+| Get All Users   | GET  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user` |
+| Get Specific User   | GET  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/user/specific/{authType}/{userId}`  |
+| Delete Tweet  | DELETE  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/{tweetId}`  |
+| Get Signed URL for Image Upload   | GET  | `https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/tweet/signedUrl/{tweetId}`  |
 
 You can also import the provided Postman Collection to take a quick look at the exposed endpoints. Also make sure to fill up `apiId` and `authToken` environment variables to make endpoints intract with the deplpoyed serverless application.
 
